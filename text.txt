@@ -1,0 +1,9 @@
+pip install django
+pip install virtualenv
+virtualenv env
+env\scripts\activate
+
+django-admin startproject mynotes
+cd mynotes
+python manage.py startapp api
+python manage.py runserver

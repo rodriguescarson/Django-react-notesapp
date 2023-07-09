@@ -1,7 +1,13 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-# Create your views here.
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import NoteSerializer
+from .models import Note
+from api import serializers
+from .utils import updateNote, getNoteDetail, deleteNote, getNotesList, createNote
 
+# Create your views here.
+@api_view(['GET','POST'])
 def getRoutes(request):
     routes = [
         {
@@ -35,4 +41,24 @@ def getRoutes(request):
             'description':'Deletes an existing note'
         }
     ]
-    return JsonResponse(routes, safe=False)
+    return Response(routes)
+
+@api_view(['GET', 'POST'])
+def getNotes(request):
+
+    if request.method == 'GET':
+        return getNotesList(request)
+
+    if request.method == 'POST':
+        return createNote(request)
+@api_view(['GET', 'PUT', 'DELETE'])
+def getNote(request, pk):
+
+    if request.method == 'GET':
+        return getNoteDetail(request, pk)
+
+    if request.method == 'PUT':
+        return updateNote(request, pk)
+
+    if request.method == 'DELETE':
+        return deleteNote(request, pk)
